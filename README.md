@@ -22,15 +22,6 @@ Step #2
 Data Cleaning
 
 
-Step #3
-
-Pivot Tables and Data Visualization with Tableau
-
-
-
-
-
-
 --Special Thanks to-- 
 
 -Alex the Data Analyst for his awesome videos, check his Github: github.com/AlexTheAnalyst and YouTube: youtube.com/c/AlexTheAnalyst
