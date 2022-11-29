@@ -1,4 +1,4 @@
-# canada_job_bank
+# job_bank_webscraper
 
 Project Name: Canada Job Bank Scraper Project -- This was a fun project!
 
@@ -7,7 +7,6 @@ Tools used:
 
 -Anaconda using Jupyter Notebook
 -Microsoft Excel
--Tableau
 
 
 --Process--
