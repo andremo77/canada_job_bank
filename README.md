@@ -6,7 +6,9 @@ Project Name= Canada Job Bank Scraper Project #This was a fun project!
 Tools used: 
 
   -Jupyter Notebook
+  
   -Web Browser
+  
   -Microsoft Excel
 
 --Process--
