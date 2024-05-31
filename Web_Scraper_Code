@@ -1,0 +1,202 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
+# import libraries
+
+from bs4 import BeautifulSoup
+import requests
+import numpy as np
+import pandas as pd
+from time import sleep
+from random import randint
+import datetime
+from csv import writer
+
+
+# In[ ]:
+
+
+# Connect to Website and pull data
+
+# To find Your User-Agent: https://httpbin.org/get
+headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"}
+
+#for page in range part 1 (36,950,000 - 36,975,040) Part 2 (36,975,040 - 37,000,000) :
+pages = np.arange (36950000, 37000001, 1)
+
+for page in pages:
+    
+    URL = 'https://www.jobbank.gc.ca/jobsearch/jobposting/' + str(page)
+    sleep(randint(1,10))
+
+    #for single page scraping - delete everything before this line except headers and readdress response
+    page = requests.get(URL, headers=headers)
+
+    soup1 = BeautifulSoup(page.content, "html.parser")
+
+    soup2 = BeautifulSoup(soup1.prettify(), "html.parser")
+
+    #page = page + 1
+
+    try:
+          job_title = soup2.find(property='title').get_text()
+    except:
+          job_title = ''
+
+    try:
+        date_posted = soup2.find(property='datePosted').get_text()
+    except:
+        date_posted = ''
+
+    try:
+        company = soup2.find(property='hiringOrganization').get_text()
+    except:
+        company = ''
+
+    try:
+        address = soup2.find(property='streetAddress').get_text()
+    except:
+        address = ''
+
+    try:
+        city = soup2.find(property='addressLocality').get_text()
+    except:
+        city = ''
+
+    try:
+        province = soup2.find(property='addressRegion').get_text()
+    except:
+        province = ''
+
+    try:
+        wage = soup2.find(property='minValue').get_text()
+    except:
+        wage = ''
+
+    try:
+        wage_reference = soup2.find(property='unitText').get_text()
+    except:
+        wage_reference = ''
+
+    try:
+        work_hours = soup2.find(property='workHours').get_text()
+    except:
+        work_hours = ''
+
+    try:
+        employment_type = soup2.find(property='employmentType').get_text()
+    except:
+        employment_type = ''
+
+    try:
+        language = soup2.find(property='qualification').get_text()
+    except:
+        language = ''
+
+    try:
+        required_education = soup2.find(property='educationRequirements qualification').get_text()
+    except:
+        required_education = ''
+
+    try:
+        required_experience = soup2.find(property='experienceRequirements qualification').get_text()
+    except:
+        required_experience = ''
+
+    try:
+        skills = soup2.find(property='experienceRequirements').get_text()
+    except:
+        skills = ''
+
+    try:
+        employment_groups = soup2.find(id='employmentGroup').get_text()
+    except:
+        employment_groups = ''
+        
+    
+    # Data Cleaning
+    job_title = job_title.strip()
+
+    date_posted = date_posted.strip()[10:]
+
+    company = company.strip()
+
+    address = address.strip()
+
+    city = city.strip()
+
+    province = province.strip()
+
+    wage = wage.strip()
+
+    wage_reference = wage_reference.strip()
+
+    work_hours = work_hours.strip()
+
+    employment_type = employment_type.strip()
+
+    language = language.strip()
+
+    required_education = required_education.strip()
+
+    required_experience = required_experience.strip()
+
+    skills = skills.strip()
+
+    employment_groups = employment_groups.strip()[238:] 
+
+   
+    print(job_title)
+    print(date_posted)
+    print(company)
+    print(address)
+    print(city)
+    print(province)
+    print(wage)
+    print(wage_reference)
+    print(work_hours)
+    print(employment_type)
+    print(language)
+    print(required_education)
+    print(required_experience)
+    print(skills)
+    print(employment_groups)
+    print(URL)
+    
+    
+    # Timestamp for output to track when data was collected
+
+    today = datetime.date.today()
+
+    print(today)
+    
+    # Data Entry into csv file (prior creation)
+    #import csv
+  
+    header = ['Job Title', 'Date Posted', 'Company', 'Address', 'City', 'Province', 'Wage', 'Wage Reference', 'Work Hours', 'Employment Type', 'Language', 'Required Education', 'Required Experience', 'Skills', 'Employment Groups', 'URL']
+    values = [job_title, date_posted, company, address, city, province, wage, wage_reference, work_hours, employment_type, language, required_education, required_experience, skills, employment_groups, URL]
+
+    with open('CanadaJobBankWebScraperDataset.csv', 'a', newline='', encoding='UTF8') as f:
+        writer = csv.writer(f)
+        writer.writerow(values)
+
+
+# In[ ]:
+
+
+# Pandas
+# File Location to Export to
+
+df = pd.read_csv(r'C:\Users\CanadaJobBankWebScraperDataset.csv')
+
+print(df)
+
+
+# In[ ]:
+
+
+
+
